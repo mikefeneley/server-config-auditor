@@ -28,6 +28,8 @@ ROOT_OPTIONS_RECOMENDATION = "Options None"
 START_DIRECTORY = "<Directory"
 END_DIRECTORY = "</Directory>"
 
+MISSING_APACHE = "(none)"
+
 UBUNTU_SEP_TOKEN = "u"
 
 LOG_FILENAME = "apache_log.txt"
@@ -53,7 +55,10 @@ class ApacheAuditor:
         self.apache_log = open(LOG_FILENAME, "w")
         self.apache_log.write(LOG_HEADER)
         self.get_system_info()
-        self.check_apache_version()
+
+        if(self.check_apache_version() < 0):
+            return 0
+        
         self.audit_apache_conf()
         self.check_missing()
         self.apache_log.close()
@@ -76,8 +81,9 @@ class ApacheAuditor:
             self.version_sep_token = UBUNTU_SEP_TOKEN
 
 
+    """ Check if the latest version of apache is installed. NEED TO CHECK
+        IF APACHE IS INSTALLED AT APP""" 
     def check_apache_version(self):
-
         version_info = open(VERSION_FILENAME, "w")
         call(["apt-cache", "policy", "apache2"], stdout=version_info)
         version_info.close()
@@ -94,15 +100,21 @@ class ApacheAuditor:
             elif line_tokens[0] == "Candidate:":
                 candidate_line = line_tokens[1]
 
+        version_info.close()
+        call(["rm", VERSION_FILENAME])
+
+        """ Return error if apache is not installed on the system """
+        if(installed_line == MISSING_APACHE):
+            return -1
+
         if(self.os == "Ubuntu"):
             installed = installed_line.split(UBUNTU_SEP_TOKEN)[0]
             candidate = candidate_line.split(UBUNTU_SEP_TOKEN)[0]
+    
 
         if(installed != candidate):
             self.write_version_error()
         
-        version_info.close()
-        call(["rm", VERSION_FILENAME])
         return 0
 
 
@@ -373,4 +385,8 @@ class ApacheAuditor:
         report = "You currently have version " + installed + " of \n"
         report += "apache2. It is recomended that you install the "
         report += "Latest avaliable version: " + candidate + "\n\n\n\n"
+        self.apache_log.write(report)
+
+    def write_missing_apache(self):
+        report = "Apache is not currently installed"
         self.apache_log.write(report)
