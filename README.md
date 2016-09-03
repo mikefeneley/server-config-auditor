@@ -12,9 +12,10 @@ https://geekflare.com/apache-web-server-hardening-security/
 
 to determine which behavior should be enforced. 
 
-I later found out about STIGS provided by the DOD. These have well defined behavior
-which is better than the unfocused approach I used here. I am abandoning this project
-and starting a new one which enforces STIG specifications for various software
+I later found out about STIGS provided by the DOD. These have well defined requirements
+making them preferable to the unfocused standards I tried to implement here.
+
+I am abandoning this project and starting a new one which enforces STIG specifications for various software
 tools.
 
 The new Apache STIG tool will be hosted here:
