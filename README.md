@@ -21,3 +21,9 @@ tools.
 The new Apache STIG tool will be hosted here:
 
 https://github.com/mikefeneley/stig_apache_2.2_nix
+
+<br>
+<br>
+<b>Contact:</b>
+
+Michael Feneley: mfeneley(at)vt.edu
