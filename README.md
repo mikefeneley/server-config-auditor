@@ -1,5 +1,7 @@
 # server-config-auditor
 
+<b>Roadmap:</b>
+
 The inital idea was to have a tool which enforced best practices
 for different server software. I started with Apache and used online 
 resources such as:
